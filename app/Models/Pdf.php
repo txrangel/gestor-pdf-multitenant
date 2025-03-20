@@ -18,17 +18,19 @@ class Pdf extends Model
     
         // Excluir o arquivo do storage e os TXTs relacionados ao deletar o registro de PDF
         static::deleting(function ($pdf) {
-            // Excluir o arquivo PDF
-            if (Storage::disk('public')->exists($pdf->file_path)) {
-                Storage::disk('public')->delete($pdf->file_path);
-            }
-    
-            // Excluir os arquivos TXT relacionados
-            foreach ($pdf->txts as $txt) {
-                if (Storage::disk('public')->exists($txt->file_path)) {
-                    Storage::disk('public')->delete($txt->file_path);
+            if($pdf->isForceDeleting()){
+                // Excluir o arquivo PDF
+                if (Storage::disk('public')->exists($pdf->file_path)) {
+                    Storage::disk('public')->delete($pdf->file_path);
                 }
-                $txt->delete(); // Excluir o registro de TXT
+        
+                // Excluir os arquivos TXT relacionados
+                foreach ($pdf->txts as $txt) {
+                    if (Storage::disk('public')->exists($txt->file_path)) {
+                        Storage::disk('public')->delete($txt->file_path);
+                    }
+                    $txt->delete(); // Excluir o registro de TXT
+                }
             }
         });
     }
