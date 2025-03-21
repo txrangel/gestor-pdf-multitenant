@@ -43,5 +43,5 @@
             </x-primary-button>
         </div>
     </form>
-    <a href="/register" class="text-blue-500 underline underline-offset-2">Register</a>
+    {{-- <a href="/register" class="text-blue-500 underline underline-offset-2">Register</a> --}}
 </x-guest-layout>
