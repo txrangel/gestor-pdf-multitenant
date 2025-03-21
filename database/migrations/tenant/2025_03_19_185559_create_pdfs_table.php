@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('pdfs', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('file_path');
+            $table->string('file_path')->unique();
             $table->timestamps();
             $table->softDeletes();
         });

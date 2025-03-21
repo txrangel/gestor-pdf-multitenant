@@ -34,5 +34,7 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
-
+    'api' => [
+        'url' => env('API_URL', 'http://127.0.0.1:5001'), // Default caso a variável não esteja definida
+    ],
 ];

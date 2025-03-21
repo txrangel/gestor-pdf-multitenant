@@ -23,21 +23,10 @@ class PdfResource extends Resource
 
     protected static ?string $cluster = Files::class;
     protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
-
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label('Nome')
-                    ->required(),
-                Forms\Components\FileUpload::make('file_path')
-                    ->label('Arquivo PDF')
-                    // ->disk('public')
-                    // ->acceptedFileTypes(['application/pdf'])
-                    ->directory('pdfs') // Salvar na pasta 'pdfs' dentro do disco 'public'
-                    ->preserveFilenames()
-                    ->required(),
             ]);
     }
 
@@ -54,26 +43,35 @@ class PdfResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
                 Tables\Actions\Action::make('download')
                     ->label('Download')
                     ->icon('heroicon-o-arrow-down-tray')
                     ->action(fn ($record) => response()->download(storage_path('app/public/' . $record->file_path))),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    // Tables\Actions\ForceDeleteBulkAction::make(),
+                    // Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManagePdfs::route('/'),
+            'index' => Pages\ListPdfs::route('/'),
+            'create' => Pages\CreatePdfCustom::route('/create'),
+            'edit' => Pages\EditPdf::route('/{record}/edit'),
         ];
     }
 

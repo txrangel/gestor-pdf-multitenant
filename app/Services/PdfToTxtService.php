@@ -9,7 +9,7 @@ class PdfToTxtService
     public function convertPdfToTxt($pdfFile)
     {
         $apiUrl = config('services.api.url');
-        $url = $apiUrl . '/processar-pdf';
+        $url    = $apiUrl . '/processar-pdf';
 
         try {
             $response = Http::attach(
@@ -17,7 +17,6 @@ class PdfToTxtService
             )->post($url, [
                 'opcao_saida' => '2',
             ]);
-
             if ($response->successful()) {
                 return $response->body();
             } else {

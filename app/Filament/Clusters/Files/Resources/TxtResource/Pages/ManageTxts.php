@@ -63,7 +63,7 @@ class ManageTxts extends ManageRecords
     private function handleZipExtraction(int $pdf_id,string $zipPath): array
     {
         $zip = new ZipArchive();
-        $txtFilePath = 'txts/' . uniqid();
+        $txtFilePath = 'tenants/'.tenant("id").'/txts/' . uniqid();
         $extractPath = storage_path('app/public/'.$txtFilePath);
 
         if ($zip->open($zipPath) !== true)
@@ -81,7 +81,7 @@ class ManageTxts extends ManageRecords
     private function storeSingleTxt(int $pdf_id,string $txtPath): array
     {
         $txtContent     = file_get_contents($txtPath);
-        $txtFilePath    = 'txts/' . uniqid() . '.txt';
+        $txtFilePath    = 'tenants/'.tenant("id").'/txts/' . uniqid() . '.txt';
         Storage::disk('public')->put($txtFilePath, $txtContent);
 
         return [
