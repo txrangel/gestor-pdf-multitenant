@@ -17,6 +17,8 @@ use Filament\Pages\SubNavigationPosition;
 
 class ProfileResource extends Resource
 {
+    protected static ?int $navigationSort = 3;
+    protected static ?string $modelLabel = 'Acesso';
     protected static ?string $model = Profile::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-identification';
@@ -29,11 +31,16 @@ class ProfileResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label('Nome')
                     ->required()
                     ->maxLength(255)
-                    ->unique(table: Profile::class, column: 'name',ignorable: null,ignoreRecord: true),
+                    ->columnSpanFull()
+                    ->unique(ignoreRecord: true),
                 Forms\Components\Textarea::make('description')
-                    ->maxLength(255),
+                    ->label('Descrição')
+                    ->maxLength(255)
+                    ->columnSpanFull()
+                    ->rows(3),
             ]);
     }
 
@@ -42,14 +49,16 @@ class ProfileResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Nome')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('description')
+                    ->label('Descrição')
                     ->sortable()
                     ->searchable(),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(), 
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

@@ -17,6 +17,8 @@ use Filament\Pages\SubNavigationPosition;
 
 class PermissionResource extends Resource
 {
+    protected static ?int $navigationSort = 4;
+    protected static ?string $modelLabel = 'Regra';
     protected static ?string $model = Permission::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-lock-closed';
@@ -29,11 +31,16 @@ class PermissionResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label('Nome')
                     ->required()
                     ->maxLength(255)
-                    ->unique(table: Permission::class, column: 'name',ignorable: null,ignoreRecord: true),
+                    ->columnSpanFull()
+                    ->unique(ignoreRecord: true),
                 Forms\Components\Textarea::make('description')
-                    ->maxLength(255),
+                    ->label('Descrição')
+                    ->maxLength(255)
+                    ->columnSpanFull()
+                    ->rows(3),
             ]);
     }
 
@@ -43,6 +50,10 @@ class PermissionResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nome')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('description')
+                    ->label('Descrição')
                     ->sortable()
                     ->searchable(),
             ])

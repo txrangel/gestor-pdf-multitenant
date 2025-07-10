@@ -26,6 +26,10 @@ class AppPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
+            // ->sidebarFullyCollapsibleOnDesktop(true)
+            // ->sidebarWidth('200px')
+            ->default()
+            ->topNavigation()
             ->id('app')
             ->path('app')
             ->login(fn () => view('auth.login'))

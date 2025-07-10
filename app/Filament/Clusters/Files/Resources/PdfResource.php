@@ -18,7 +18,8 @@ use Filament\Pages\SubNavigationPosition;
 class PdfResource extends Resource
 {
     protected static ?string $model = Pdf::class;
-
+    protected static ?int $navigationSort = 1;
+    protected static ?string $modelLabel = 'Arquivos PDF';
     protected static ?string $navigationIcon = 'heroicon-o-document';
 
     protected static ?string $cluster = Files::class;
@@ -49,12 +50,14 @@ class PdfResource extends Resource
                     ->label('Download')
                     ->icon('heroicon-o-arrow-down-tray')
                     ->action(fn ($record) => response()->download(storage_path('app/public/' . $record->file_path))),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    // Tables\Actions\ForceDeleteBulkAction::make(),
-                    // Tables\Actions\RestoreBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }
@@ -71,7 +74,7 @@ class PdfResource extends Resource
         return [
             'index' => Pages\ListPdfs::route('/'),
             'create' => Pages\CreatePdfCustom::route('/create'),
-            'edit' => Pages\EditPdf::route('/{record}/edit'),
+            // 'edit' => Pages\EditPdf::route('/{record}/edit'),
         ];
     }
 

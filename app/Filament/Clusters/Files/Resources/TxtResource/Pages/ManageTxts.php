@@ -3,8 +3,8 @@
 namespace App\Filament\Clusters\Files\Resources\TxtResource\Pages;
 
 use App\Filament\Clusters\Files\Resources\TxtResource;
-use App\Models\Pdf;
-use App\Services\PdfToTxtService;
+use App\Http\Controllers\PdfController;
+use App\Http\Controllers\OrderController;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 use Illuminate\Support\Facades\Storage;
@@ -26,7 +26,7 @@ class ManageTxts extends ManageRecords
 
     private function handlePdfConversion(array $data): array
     {
-        $pdf = Pdf::find($data['pdf_id']);
+        $pdf = app(PdfController::class)->findById($data['pdf_id']);
 
         if (!$pdf)
             throw new \Exception('PDF não encontrado.');
@@ -35,9 +35,11 @@ class ManageTxts extends ManageRecords
 
         if (!file_exists($pdfFilePath))
             throw new \Exception("Arquivo PDF não encontrado: $pdfFilePath");
-
-        $pdfToTxtService    = new PdfToTxtService();
-        $apiResponseContent  = $pdfToTxtService->convertPdfToTxt($pdfFilePath);
+        
+        //Cria os Pedidos Autimaticamente
+        $json = app(OrderController::class)->create($pdfFilePath);
+        
+        $apiResponseContent  = app(PdfController::class)->ConvertPDFAPI($pdfFilePath,'2');
 
         // Criar um arquivo temporário
         $tempFilePath = tempnam(sys_get_temp_dir(), 'api_response');

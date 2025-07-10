@@ -20,7 +20,8 @@ use Filament\Pages\SubNavigationPosition;
 class TxtResource extends Resource
 {
     protected static ?string $model = Txt::class;
-
+    protected static ?int $navigationSort = 3;
+    protected static ?string $modelLabel = 'Arquivos de Texto';
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?string $cluster = Files::class;

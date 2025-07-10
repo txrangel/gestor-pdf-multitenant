@@ -20,7 +20,7 @@ class TenantResource extends Resource
 {
     protected static ?string $cluster = Settings::class;
     protected static ?string $model = Tenant::class;
-
+    protected static ?string $modelLabel = 'Cliente';
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
     protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
     public static function form(Form $form): Form
@@ -29,21 +29,26 @@ class TenantResource extends Resource
             ->schema([
                 Forms\Components\Section::make()->schema([
                     Forms\Components\TextInput::make('name')
+                        ->label('Nome')
                         ->required()
                         ->maxLength(255),
                     Forms\Components\TextInput::make('email')
+                        ->label('E-mail')
                         ->required()
                         ->email()
-                        ->unique(table: Tenant::class, column: 'email',ignorable: null,ignoreRecord: true)
+                        ->unique(ignoreRecord: true)
                         ->maxLength(255),
                     Forms\Components\TextInput::make('password')
+                        ->label('Senha')
                         ->password()
                         ->required()
                         ->maxLength(255),
                     Forms\Components\TextInput::make('domain')
+                        ->label('Domínio')
                         ->required()
                         ->maxLength(255),
                     Forms\Components\FileUpload::make('photo_path')
+                        ->label('Logo')
                         ->disk('public') // Usar o disco 'public'
                         ->directory('tenants/photos') // Salvar na pasta 'pdfs' dentro do disco 'public'
                         ->preserveFilenames()
@@ -57,9 +62,11 @@ class TenantResource extends Resource
                         ->previewable(true)
                         ->required(),
                     Forms\Components\ColorPicker::make('primary_color')
+                        ->label('Cor Primária')
                         ->regex('/^#([a-f0-9]{6}|[a-f0-9]{3})\b$/')
                         ->required(),
                     Forms\Components\ColorPicker::make('secundary_color')
+                        ->label('Cor Secundária')
                         ->regex('/^#([a-f0-9]{6}|[a-f0-9]{3})\b$/')
                         ->required(),
                 ])

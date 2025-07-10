@@ -10,7 +10,7 @@
                 </div>
                 <h1
                     class="fi-simple-header-heading text-center text-2xl font-bold tracking-tight text-zinc-950 dark:text-white">
-                    Sign in
+                    Entrar
                 </h1>
             </header>
             <form class="fi-form grid gap-y-6" method="POST" action="{{ route('login') }}">
@@ -23,7 +23,7 @@
                                     <label class="fi-fo-field-wrp-label inline-flex items-center gap-x-3"
                                         for="email">
                                         <span class="text-sm font-medium leading-6 text-gray-950 dark:text-white">
-                                            Email address<sup class="text-red-600 dark:text-red-400 font-medium">*</sup>
+                                            E-mail<sup class="text-red-600 dark:text-red-400 font-medium">*</sup>
                                         </span>
                                     </label>
                                 </div>
@@ -46,7 +46,7 @@
                                     <label class="fi-fo-field-wrp-label inline-flex items-center gap-x-3"
                                         for="password">
                                         <span class="text-sm font-medium leading-6 text-gray-950 dark:text-white">
-                                            Password<sup class="text-red-600 dark:text-red-400 font-medium">*</sup>
+                                            Senha<sup class="text-red-600 dark:text-red-400 font-medium">*</sup>
                                         </span>
                                     </label>
                                 </div>
@@ -55,16 +55,17 @@
                                         class="fi-input-wrp flex rounded-lg shadow-sm ring-1 transition duration-75 bg-white dark:bg-white/5 [&amp;:not(:has(.fi-ac-action:focus))]:focus-within:ring-2 ring-gray-950/10 dark:ring-white/20 [&amp;:not(:has(.fi-ac-action:focus))]:focus-within:ring-primary-600 dark:[&amp;:not(:has(.fi-ac-action:focus))]:focus-within:ring-primary-500 fi-fo-text-input overflow-hidden">
                                         <div class="fi-input-wrp-input min-w-0 flex-1">
                                             <input id="password" type="password" name="password" required
-                                                class="fi-input block w-full border-none py-1.5 text-base text-gray-950 transition duration-75 placeholder:text-gray-400 focus:ring-0 disabled:text-gray-500 disabled:[-webkit-text-fill-color:theme(colors.gray.500)] disabled:placeholder:[-webkit-text-fill-color:theme(colors.gray.400)] dark:text-white dark:placeholder:text-gray-500 dark:disabled:text-gray-400 dark:disabled:[-webkit-text-fill-color:theme(colors.gray.400)] dark:disabled:placeholder:[-webkit-text-fill-color:theme(colors.gray.500)] sm:text-sm sm:leading-6 bg-white/0 ps-3 pe-3 [&amp;::-ms-reveal]:hidden"
-                                                x-bind:type="isPasswordRevealed ? 'text' : 'password'" tabindex="2"
-                                            type="password">
+                                                class="fi-input block w-full border-none py-1.5 text-base text-gray-950 transition duration-75 placeholder:text-gray-400 focus:ring-0 disabled:text-gray-500 disabled:[-webkit-text-fill-color:theme(colors.gray.500)] disabled:placeholder:[-webkit-text-fill-color:theme(colors.gray.400)] dark:text-white dark:placeholder:text-gray-500 dark:disabled:text-gray-400 dark:disabled:[-webkit-text-fill-color:theme(colors.gray.400)] dark:disabled:placeholder:[-webkit-text-fill-color:theme(colors.gray.500)] sm:text-sm sm:leading-6 bg-white/0 ps-3 pe-3 [&amp;::-ms-reveal]:hidden">
                                         </div>
+                                        <button type="button" id="togglePassword"
+                                            class="px-3 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div class="flex items-center justify-between">
                     <label class="flex items-center">
