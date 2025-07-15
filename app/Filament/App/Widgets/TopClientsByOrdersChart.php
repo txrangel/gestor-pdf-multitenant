@@ -10,7 +10,7 @@ class TopClientsByOrdersChart extends ChartWidget
 {
     use FiltersChartByUserData; // 2. Usar
 
-    protected static ?string $heading = 'Top 10 Clientes com Mais Pedidos';
+    protected static ?string $heading = 'Top 5 Clientes com Mais Pedidos';
     protected static ?string $maxHeight = '300px';
     protected static string $color = 'info';
     protected static ?string $pollingInterval = null;
@@ -24,7 +24,7 @@ class TopClientsByOrdersChart extends ChartWidget
             ->selectRaw('cnpj, COUNT(*) as total')
             ->groupBy('cnpj')
             ->orderByDesc('total')
-            ->limit(10)
+            ->limit(5)
             ->get();
 
         return [
@@ -33,6 +33,7 @@ class TopClientsByOrdersChart extends ChartWidget
                     'label' => 'Pedidos',
                     'data' => $data->pluck('total'),
                     'backgroundColor' => ['#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0', '#9966FF'],
+                
                 ],
             ],
             'labels' => $data->pluck('cnpj'),

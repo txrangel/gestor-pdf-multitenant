@@ -2,16 +2,10 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PdfController;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
-use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\UserProfileController;
-use App\Http\Middleware\CheckPermission;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware([
@@ -21,7 +15,6 @@ Route::middleware([
     ShareErrorsFromSession::class, // Compartilha erros de sessão com as views
 ])->group(function () {
 
-    
     Route::redirect('/','/app')->name('app');
     // Route::get('/upload', [PdfController::class,'create'])->name('create');
     Route::post('/upload', [PdfController::class,'store'])->name('upload');

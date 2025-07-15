@@ -4,13 +4,14 @@ namespace App\Filament\Widgets;
 
 use App\Filament\Traits\FiltersChartByUserData; // 1. Importar
 use App\Models\Order;
+use Filament\Support\RawJs;
 use Filament\Widgets\ChartWidget;
 
 class TopClientsByOrderValueChart extends ChartWidget
 {
     use FiltersChartByUserData; // 2. Usar
 
-    protected static ?string $heading = 'Top 10 Clientes por Valor em Pedidos';
+    protected static ?string $heading = 'Top 5 Clientes por Valor em Pedidos';
     protected static ?string $maxHeight = '300px';
     protected static string $color = 'warning';
     protected static ?string $pollingInterval = null;
@@ -25,7 +26,7 @@ class TopClientsByOrderValueChart extends ChartWidget
             ->selectRaw('orders.cnpj, sum(order_items.sales_price * order_items.sales_quantity) as total_value')
             ->groupBy('orders.cnpj')
             ->orderByDesc('total_value')
-            ->limit(10)
+            ->limit(5)
             ->get();
 
         return [
@@ -44,4 +45,5 @@ class TopClientsByOrderValueChart extends ChartWidget
     {
         return 'pie';
     }
+
 }
