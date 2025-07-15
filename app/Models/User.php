@@ -60,4 +60,8 @@ class User extends Authenticatable
         }
         return false;
     }
+    public function pdfs()
+    {
+        return $this->hasMany(Pdf::class);
+    }
 }

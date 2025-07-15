@@ -39,6 +39,12 @@ class PdfResource extends Resource
                     ->label('Nome')
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Criação')
+                    ->sortable()
+                    ->searchable()
+                    ->dateTime(),
+                    
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

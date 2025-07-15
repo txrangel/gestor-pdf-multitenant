@@ -11,7 +11,7 @@ class Pdf extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $fillable = ['name', 'file_path'];
+    protected $fillable = ['name', 'file_path','user_id'];
     protected static function boot()
     {
         parent::boot();
@@ -37,5 +37,9 @@ class Pdf extends Model
     public function txts()
     {
         return $this->hasMany(Txt::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

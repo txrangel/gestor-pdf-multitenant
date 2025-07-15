@@ -34,9 +34,8 @@ class Txt extends Model
     {
         return $this->belongsTo(Pdf::class);
     }
-
-    public function requests()
+    public function orders()
     {
-        return $this->hasMany(Request::class);
+        return $this->hasMany(Order::class);
     }
 }

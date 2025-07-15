@@ -12,11 +12,12 @@ class OrderService
         private OrderItemService $orderItemService
     ) {}
 
-    public function createOrdersFromArray(array $ordersData): void
+    public function createOrdersFromArray(array $ordersData,int $txt_id): void
     {
-        DB::transaction(function () use ($ordersData) {
+        DB::transaction(function () use ($ordersData, $txt_id) {
             foreach ($ordersData as $orderData) {
                 $order = $this->orderRepository->create([
+                    'txt_id' => $txt_id,
                     'cnpj' => $orderData['CNPJ'],
                     'client_order' => $orderData['ClientOrder'],
                     'date' => \Carbon\Carbon::createFromFormat('d/m/Y', $orderData['Date']),

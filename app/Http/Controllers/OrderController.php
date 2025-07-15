@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Txt;
 use App\Services\OrderService;
 use App\Services\PdfService;
+use Filament\Notifications\Notification;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Storage;
 
 class OrderController extends Controller
 {
@@ -12,21 +16,22 @@ class OrderController extends Controller
         private OrderService $orderService
     ) {}
 
-    public function create(string $pdfFilePath)
+    public function create(Txt $txt): JsonResponse
     {
-        if (!file_exists($pdfFilePath)) {
+        $pdf = app(PdfController::class)->findById($txt->pdf->id);
+        $pdfFilePath = Storage::disk('public')->path($pdf->file_path);
+        if (!file_exists($pdfFilePath))
             throw new \Exception("Arquivo PDF não encontrado: $pdfFilePath");
-        }
-
         $json = $this->pdfService->ConvertPDFAPI($pdfFilePath, '3');
-
         $orders = json_decode($json, true);
-
         if (is_array($orders)) {
-            $this->orderService->createOrdersFromArray($orders);
+            $this->orderService->createOrdersFromArray($orders, $txt->id);
+                Notification::make()
+                ->success()
+                ->title('Pedido criado.')
+                ->send();
             return response()->json(['message' => 'Pedidos importados com sucesso!']);
         }
-
         return response()->json(['error' => 'Erro ao converter PDF para JSON'], 422);
     }
 }

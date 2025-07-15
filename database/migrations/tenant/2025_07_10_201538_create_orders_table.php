@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('txt_id')->constrained()->onDelete('cascade')->unique();
             $table->string('cnpj', 20);
             $table->string('client_order');
             $table->date('date');
