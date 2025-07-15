@@ -43,6 +43,12 @@ class AppPanelProvider extends PanelProvider
             ->widgets([
                 // Widgets\AccountWidget::class,
                 // Widgets\FilamentInfoWidget::class,
+                \App\Filament\Widgets\ItemsSoldPerMonthChart::class,
+                \App\Filament\Widgets\OrdersPerMonthChart::class,
+                \App\Filament\Widgets\OrderValuePerMonthChart::class,
+                \App\Filament\Widgets\TopClientsByOrdersChart::class,
+                \App\Filament\Widgets\TopClientsByOrderValueChart::class,
+                
             ])
             ->middleware([
                 EncryptCookies::class,
