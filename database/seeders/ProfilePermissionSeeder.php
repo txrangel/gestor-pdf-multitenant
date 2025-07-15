@@ -23,7 +23,6 @@ class ProfilePermissionSeeder extends Seeder
         $allPermissions         = Permission::all();
         $indexPermissions       = Permission::where('name', 'like', '%.index')->orWhere('name', 'like', '%.view')->get();
         $nonDestroyPermissions  = Permission::where('name', 'not like', '%.delete.force')->get();
-
         // Atrelar todas as permissões ao perfil de Admin
         $adminProfile->permissions()->sync($allPermissions->pluck('id'));
 
@@ -36,5 +35,13 @@ class ProfilePermissionSeeder extends Seeder
         // Atrelar o usuário admin ao perfil de Admin
         $adminUser = User::first();
         $adminUser->profiles()->sync([$adminProfile->id]);
+
+        $pdfView     = Profile::create(['name' => 'Usuário Comum']);
+
+        $permissionNames        = ['pdf.view', 'pdf.create', 'pdf.delete','txt.view', 'txt.create', 'txt.delete','order.view', 'order.create', 'order.delete'];
+
+        $visualizadorPermissoes = Permission::whereIn('name', $permissionNames)->get();
+
+        $pdfView->permissions()->sync($visualizadorPermissoes->pluck('id'));
     }
 }

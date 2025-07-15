@@ -31,14 +31,12 @@ class PermissionTenantSeeder extends Seeder
         Permission::create(['name' => 'txt.delete']);
         Permission::create(['name' => 'txt.restore']);
         Permission::create(['name' => 'txt.delete.force']);
-        Permission::create(['name' => 'request.index']);
-        Permission::create(['name' => 'request.view']);
-        Permission::create(['name' => 'request.create']);
-        Permission::create(['name' => 'request.update']);
-        Permission::create(['name' => 'request.update.password']);
-        Permission::create(['name' => 'request.profiles.update']);
-        Permission::create(['name' => 'request.delete']);
-        Permission::create(['name' => 'request.restore']);
-        Permission::create(['name' => 'request.delete.force']);
+        Permission::create(['name' => 'order.index']);
+        Permission::create(['name' => 'order.view']);
+        Permission::create(['name' => 'order.create']);
+        Permission::create(['name' => 'order.update']);
+        Permission::create(['name' => 'order.delete']);
+        Permission::create(['name' => 'order.restore']);
+        Permission::create(['name' => 'order.delete.force']);
     }
 }

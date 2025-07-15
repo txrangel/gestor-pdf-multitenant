@@ -49,7 +49,7 @@ class PdfController extends Controller
     public function ConvertPDFAPI($pdfFile,string $opcao_saida): string
     {
         $user = auth()->user();
-        Gate::authorize(ability: 'create', arguments: $user);
+        Gate::allows('create', Pdf::class);
         try {
             return $this->service->ConvertPDFAPI($pdfFile,$opcao_saida);
         } catch (\Exception $e) {
@@ -59,7 +59,7 @@ class PdfController extends Controller
     public function store(PdfCreateRequest $request): RedirectResponse
     {
         $user = auth()->user();
-        Gate::authorize(ability: 'create', arguments: $user);
+        Gate::allows('create', Pdf::class);
         try {
             $data = [
                 "name"      => $request['name'],

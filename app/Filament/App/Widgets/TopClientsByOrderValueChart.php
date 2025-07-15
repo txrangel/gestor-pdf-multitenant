@@ -2,23 +2,28 @@
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Traits\FiltersChartByUserData; // 1. Importar
 use App\Models\Order;
-use App\Models\OrderItem;
 use Filament\Widgets\ChartWidget;
 
 class TopClientsByOrderValueChart extends ChartWidget
 {
+    use FiltersChartByUserData; // 2. Usar
+
     protected static ?string $heading = 'Top 10 Clientes por Valor em Pedidos';
     protected static ?string $maxHeight = '300px';
     protected static string $color = 'warning';
 
     protected function getData(): array
     {
-        $data = Order::query()
-            ->select('cnpj')
+        // 3. Aplicar o filtro
+        $filteredQuery = $this->applyUserFilter(Order::query());
+
+        // 4. Continuar a consulta
+        $data = $filteredQuery
             ->join('order_items', 'orders.id', '=', 'order_items.order_id')
-            ->selectRaw('sum(sales_price*sales_quantity) as total_value')
-            ->groupBy('cnpj')
+            ->selectRaw('orders.cnpj, sum(order_items.sales_price * order_items.sales_quantity) as total_value')
+            ->groupBy('orders.cnpj')
             ->orderByDesc('total_value')
             ->limit(10)
             ->get();
@@ -39,13 +44,4 @@ class TopClientsByOrderValueChart extends ChartWidget
     {
         return 'pie';
     }
-    // protected function getFilters(): ?array
-    // {
-    //     return [
-    //         'today' => 'Today',
-    //         'week' => 'Last week',
-    //         'month' => 'Last month',
-    //         'year' => 'This year',
-    //     ];
-    // }
 }

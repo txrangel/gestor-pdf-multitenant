@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Traits\FiltersChartByUserData; // 1. Importar
 use App\Models\OrderItem;
 use Filament\Widgets\ChartWidget;
 use Flowframe\Trend\Trend;
@@ -9,6 +10,8 @@ use Flowframe\Trend\TrendValue;
 
 class OrderValuePerMonthChart extends ChartWidget
 {
+    use FiltersChartByUserData; // 2. Usar
+
     protected static ?string $heading = 'Valor Total dos Pedidos por Mês';
     protected static ?string $maxHeight = '300px';
     protected static string $color = 'success';
@@ -16,7 +19,11 @@ class OrderValuePerMonthChart extends ChartWidget
 
     protected function getData(): array
     {
-        $data = Trend::model(OrderItem::class)
+        // 3. Aplicar o filtro
+        $filteredQuery = $this->applyUserFilter(OrderItem::query());
+
+        // 4. Usar Trend::query()
+        $data = Trend::query($filteredQuery)
             ->between(now()->startOfYear(), now()->endOfYear())
             ->perMonth()
             ->sum('sales_price*sales_quantity');
@@ -36,13 +43,4 @@ class OrderValuePerMonthChart extends ChartWidget
     {
         return 'line';
     }
-    // protected function getFilters(): ?array
-    // {
-    //     return [
-    //         'today' => 'Today',
-    //         'week' => 'Last week',
-    //         'month' => 'Last month',
-    //         'year' => 'This year',
-    //     ];
-    // }
 }

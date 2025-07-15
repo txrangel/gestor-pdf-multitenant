@@ -14,11 +14,7 @@ class PdfCreateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // Obtém o usuário autenticado
-        $user = $this->user();
-
-        // Verifica se o usuário tem a permissão 'pdf.create'
-        return $user && $user->hasPermission('pdf.create');
+        return true;
     }
 
     /**

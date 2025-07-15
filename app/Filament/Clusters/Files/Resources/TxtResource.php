@@ -5,6 +5,7 @@ namespace App\Filament\Clusters\Files\Resources;
 use App\Filament\Clusters\Files;
 use App\Filament\Clusters\Files\Resources\TxtResource\Pages;
 use App\Filament\Clusters\Files\Resources\TxtResource\RelationManagers;
+use App\Models\Pdf;
 use App\Models\Txt;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -13,6 +14,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use ZipArchive;
 use Filament\Pages\SubNavigationPosition;
@@ -26,17 +28,31 @@ class TxtResource extends Resource
 
     protected static ?string $cluster = Files::class;
     protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
-
+    public static function canViewAny(): bool
+    {
+        return Auth::user()->hasPermission('txt.view');
+    }
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Select::make('pdf_id')
                     ->label('PDF')
-                    ->relationship('pdf', 'name')
-                    ->unique(table: Txt::class, column: 'pdf_id',ignorable: null,ignoreRecord: true)
+                    // Ajuste aqui para filtrar os PDFs exibidos no dropdown
+                    ->relationship(
+                        name: 'pdf',
+                        titleAttribute: 'name',
+                        modifyQueryUsing: function (Builder $query) {
+                            $user = Auth::user();
+                            // Se o usuário não tiver permissão para ver todos os PDFs (viewAny),
+                            // então filtramos a lista para mostrar apenas os PDFs que ele criou.
+                            if (!$user->can('viewAny', Pdf::class)) {
+                                $query->where('user_id', $user->id);
+                            }
+                        }
+                    )
+                    ->unique(table: Txt::class, column: 'pdf_id', ignorable: null, ignoreRecord: true)
                     ->required(),
-                // Forms\Components\FileUpload::make('file_path')->required(),
             ]);
     }
 
@@ -46,6 +62,10 @@ class TxtResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('pdf.name')
                     ->label('PDF')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('pdf.user.name')
+                    ->label('Criador')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('extension')
@@ -130,7 +150,26 @@ class TxtResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
+        $user = Auth::user();
+
+        // 1. O usuário pode ver QUALQUER TXT?
+        if ($user->can('viewAny', Txt::class)) {
+            return parent::getEloquentQuery()->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
+        }
+
+        // 2. Se não, o usuário precisa da permissão básica para 'ver'
+        if (!$user->hasPermission('txt.view')) {
+            return parent::getEloquentQuery()->whereRaw('0 = 1'); // Retorna uma consulta vazia
+        }
+        
+        // 3. Se tiver a permissão, filtramos para mostrar apenas os TXTs
+        // cujo PDF pai pertence ao usuário.
         return parent::getEloquentQuery()
+            ->whereHas('pdf', function (Builder $query) use ($user) {
+                $query->where('user_id', $user->id);
+            })
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
