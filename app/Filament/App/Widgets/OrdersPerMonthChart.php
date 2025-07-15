@@ -13,7 +13,7 @@ class OrdersPerMonthChart extends ChartWidget
     protected static ?string $heading = 'Total de Pedidos por Mês';
     protected static ?string $maxHeight = '300px';
     protected static string $color = 'primary';
-
+    protected static ?string $pollingInterval = null;
     protected function getData(): array
     {
         // 3. Aplicar o filtro na consulta base

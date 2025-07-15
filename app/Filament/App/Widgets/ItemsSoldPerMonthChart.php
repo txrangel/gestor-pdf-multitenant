@@ -14,8 +14,8 @@ class ItemsSoldPerMonthChart extends ChartWidget
 
     protected static ?string $heading = 'Itens Vendidos por Mês';
     protected static ?string $maxHeight = '300px';
-    protected static string $color = 'gray';
-
+    protected static string $color = 'primary';
+    protected static ?string $pollingInterval = null;
     protected function getData(): array
     {
         // 3. Aplicar o filtro na consulta base

@@ -13,7 +13,7 @@ class TopClientsByOrdersChart extends ChartWidget
     protected static ?string $heading = 'Top 10 Clientes com Mais Pedidos';
     protected static ?string $maxHeight = '300px';
     protected static string $color = 'info';
-
+    protected static ?string $pollingInterval = null;
     protected function getData(): array
     {
         // 3. Aplicar o filtro

@@ -68,14 +68,15 @@ class TxtResource extends Resource
                     ->label('Criador')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('extension')
-                    ->label('Extensão')
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Criação')
                     ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('file_path')
-                    ->label('Caminho')
-                    ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->dateTime(),
+                // Tables\Columns\TextColumn::make('file_path')
+                //     ->label('Caminho')
+                //     ->sortable()
+                //     ->searchable(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

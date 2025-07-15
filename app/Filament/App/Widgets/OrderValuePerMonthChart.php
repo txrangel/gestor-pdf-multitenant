@@ -16,7 +16,7 @@ class OrderValuePerMonthChart extends ChartWidget
     protected static ?string $maxHeight = '300px';
     protected static string $color = 'success';
     protected int | string | array $columnSpan = 'full';
-
+    protected static ?string $pollingInterval = null;
     protected function getData(): array
     {
         // 3. Aplicar o filtro

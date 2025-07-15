@@ -49,7 +49,7 @@ return [
          * Tenant database names are created like this:
          * prefix + tenant_id + suffix.
          */
-        'prefix' => 'tenant_',
+        'prefix' => 'gped_multi_tenancy_tenant_',
         'suffix' => '',
 
         /**
