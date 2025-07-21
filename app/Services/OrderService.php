@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Repositories\OrderRepository;
 use App\Services\OrderItemService;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\CustomerController;
 
 class OrderService
 {
@@ -16,9 +17,11 @@ class OrderService
     {
         DB::transaction(function () use ($ordersData, $txt_id) {
             foreach ($ordersData as $orderData) {
+                $customer = app(CustomerController::class)->findByCNPJOrCreate($orderData['CNPJ']);
                 $order = $this->orderRepository->create([
                     'txt_id' => $txt_id,
-                    'cnpj' => $orderData['CNPJ'],
+                    // 'cnpj' => $orderData['CNPJ'],
+                    'customer_id' => $customer->id,
                     'client_order' => $orderData['ClientOrder'],
                     'date' => \Carbon\Carbon::createFromFormat('d/m/Y', $orderData['Date']),
                     'message_for_note' => $orderData['MessageForNote'] ?? '',

@@ -21,6 +21,7 @@ class UserDashboard extends Page
             \App\Filament\Widgets\OrderValuePerMonthChart::class,
             \App\Filament\Widgets\TopClientsByOrdersChart::class,
             \App\Filament\Widgets\TopClientsByOrderValueChart::class,
+            \App\Filament\Widgets\CustomersPerMonthChart::class,
         ];
 
         $this->widgets = collect($widgetClasses)->map(function ($widgetClass) {

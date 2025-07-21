@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use App\Filament\Traits\FiltersChartByUserData; // 1. Importar
 use App\Models\Order;
 use Filament\Widgets\ChartWidget;
+use App\Http\Controllers\CustomerController;
 
 class TopClientsByOrdersChart extends ChartWidget
 {
@@ -16,13 +17,12 @@ class TopClientsByOrdersChart extends ChartWidget
     protected static ?string $pollingInterval = null;
     protected function getData(): array
     {
-        // 3. Aplicar o filtro
         $filteredQuery = $this->applyUserFilter(Order::query());
 
-        // 4. Continuar a consulta
         $data = $filteredQuery
-            ->selectRaw('cnpj, COUNT(*) as total')
-            ->groupBy('cnpj')
+            ->with(['customer']) // Carrega o relacionamento
+            ->selectRaw('customer_id, COUNT(*) as total')
+            ->groupBy('customer_id')
             ->orderByDesc('total')
             ->limit(5)
             ->get();
@@ -33,10 +33,11 @@ class TopClientsByOrdersChart extends ChartWidget
                     'label' => 'Pedidos',
                     'data' => $data->pluck('total'),
                     'backgroundColor' => ['#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0', '#9966FF'],
-                
                 ],
             ],
-            'labels' => $data->pluck('cnpj'),
+            'labels' => $data->map(function ($item) {
+                return $item->customer->razao_social . "\nCNPJ: " . $item->customer->cnpj;
+            }),
         ];
     }
 

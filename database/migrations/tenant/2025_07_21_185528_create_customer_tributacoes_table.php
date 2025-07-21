@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('customer_tributacoes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('txt_id')->constrained()->onDelete('cascade')->unique();
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');
-            $table->string('client_order');
-            $table->date('date');
-            $table->text('message_for_note')->nullable();
-            $table->string('operation');
-            $table->string('shipping_type');
+            $table->integer('ano');
+            $table->string('cnpj_da_scp')->nullable();
+            $table->string('forma_de_tributacao');
+            $table->integer('quantidade_de_escrituracoes');
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('customer_tributacaos');
     }
 };

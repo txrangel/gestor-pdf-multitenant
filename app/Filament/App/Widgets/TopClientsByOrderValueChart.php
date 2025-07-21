@@ -17,14 +17,13 @@ class TopClientsByOrderValueChart extends ChartWidget
     protected static ?string $pollingInterval = null;
     protected function getData(): array
     {
-        // 3. Aplicar o filtro
         $filteredQuery = $this->applyUserFilter(Order::query());
 
-        // 4. Continuar a consulta
         $data = $filteredQuery
+            ->with(['customer']) // Carrega o relacionamento
             ->join('order_items', 'orders.id', '=', 'order_items.order_id')
-            ->selectRaw('orders.cnpj, sum(order_items.sales_price * order_items.sales_quantity) as total_value')
-            ->groupBy('orders.cnpj')
+            ->selectRaw('orders.customer_id, sum(order_items.sales_price * order_items.sales_quantity) as total_value')
+            ->groupBy('orders.customer_id')
             ->orderByDesc('total_value')
             ->limit(5)
             ->get();
@@ -37,7 +36,9 @@ class TopClientsByOrderValueChart extends ChartWidget
                     'backgroundColor' => ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
                 ],
             ],
-            'labels' => $data->pluck('cnpj'),
+            'labels' => $data->map(function ($item) {
+                return $item->customer->razao_social . "\nCNPJ: " . $item->customer->cnpj;
+            }),
         ];
     }
 
