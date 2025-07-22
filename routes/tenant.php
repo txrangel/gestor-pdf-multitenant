@@ -10,14 +10,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware([
     'web',
-    InitializeTenancyByDomain::class, // Inicializa o tenant
-    PreventAccessFromCentralDomains::class, // Bloqueia acesso central
-    ShareErrorsFromSession::class, // Compartilha erros de sessão com as views
+    InitializeTenancyByDomain::class,
+    PreventAccessFromCentralDomains::class,
+    ShareErrorsFromSession::class,
 ])->group(function () {
-
     Route::redirect('/','/app')->name('app');
-    // Route::get('/upload', [PdfController::class,'create'])->name('create');
     Route::post('/upload', [PdfController::class,'store'])->name('upload');
-    // Inclua as rotas de autenticação do Breeze
+    
+    // Rotas de autenticação do Breeze
     require __DIR__.'/auth.php';
 });

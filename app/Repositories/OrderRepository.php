@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Order;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 
 class OrderRepository
 {
@@ -21,6 +22,16 @@ class OrderRepository
     public function findById(int $id): Order
     {
         return $this->model->findOrFail(id: $id);
+    }
+    public function getByDates($start_date,$end_date): Collection
+    {
+        return $this->model::with(['customer', 'items'])
+                ->whereBetween('date', [
+                    $start_date,
+                    $end_date
+                ])
+                ->orderBy('date', 'desc')
+                ->get();
     }
     public function create(array $data): Order
     {

@@ -126,10 +126,20 @@ class TenancyServiceProvider extends ServiceProvider
     protected function mapRoutes()
     {
         $this->app->booted(function () {
-            if (file_exists(base_path('routes/tenant.php'))) {
-                Route::namespace(static::$controllerNamespace)
-                    ->group(base_path('routes/tenant.php'));
-            }
+            // Rotas Web do Tenant
+            Route::middleware([
+                'web',
+                \Stancl\Tenancy\Middleware\InitializeTenancyByDomain::class,
+                \Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains::class
+            ])->group(base_path('routes/tenant.php'));
+
+            // Rotas API do Tenant - ADICIONE ESTE BLOCO
+            Route::prefix('api')
+                ->middleware([
+                    'api',
+                    \Stancl\Tenancy\Middleware\InitializeTenancyByDomain::class,
+                    \Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains::class
+                ])->group(base_path('routes/tenant_api.php'));
         });
     }
 

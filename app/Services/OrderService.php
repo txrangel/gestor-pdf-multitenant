@@ -3,6 +3,7 @@ namespace App\Services;
 
 use App\Repositories\OrderRepository;
 use App\Services\OrderItemService;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\CustomerController;
 
@@ -32,5 +33,9 @@ class OrderService
                 $this->orderItemService->createItemsFromArray($order->id, $orderData['Items']);
             }
         });
+    }
+    public function getByDates($start_date,$end_date): Collection
+    {
+        return $this->orderRepository->getByDates($start_date,$end_date);
     }
 }
