@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <div class="space-y-8 bg-white dark:bg-zinc-950 dark:text-white  p-4">
+    <div class="space-y-8 bg-white dark:bg-zinc-950 dark:text-white p-4">
         <!-- Logo do cliente -->
         <div class="flex justify-center">
             <div class="h-24 w-full flex items-center justify-center">
