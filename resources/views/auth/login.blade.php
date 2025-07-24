@@ -1,92 +1,67 @@
 <x-guest-layout>
-    <div class="fi-simple-page">
-        <section class="grid auto-cols-fr gap-y-6">
-            <header class="fi-simple-header flex flex-col items-center">
-                <div style="height: 62px;" class="fi-logo flex dark:hidden mb-4">
-                    <x-application-logo />
-                </div>
-                <div style="height: 62px;" class="fi-logo hidden dark:flex mb-4">
-                    <x-application-logo-escuro />
-                </div>
-                <h1
-                    class="fi-simple-header-heading text-center text-2xl font-bold tracking-tight text-zinc-950 dark:text-white">
-                    Entrar
-                </h1>
-            </header>
-            <form class="fi-form grid gap-y-6" method="POST" action="{{ route('login') }}">
+    <div class="space-y-8 bg-white dark:bg-zinc-950 dark:text-white  p-4">
+        <!-- Logo do cliente -->
+        <div class="flex justify-center">
+            <div class="h-24 w-full flex items-center justify-center">
+                <img src="{{ Storage::url(tenant()->photo_path) }}" alt="{{ tenant()->name }} Logo" 
+                     class="h-full object-contain max-w-full">
+            </div>
+        </div>
+
+        <div class="space-y-6">
+            <h1 class="text-2xl font-bold text-center text-gray-900 dark:text-white">
+                Acesse sua conta
+            </h1>
+
+            <form class="space-y-5" method="POST" action="{{ route('login') }}">
                 @csrf
-                <div class="grid grid-cols-[--cols-default] fi-fo-component-ctn gap-6">
-                    <div style="--col-span-default: span 1 / span 1;" class="col-[--col-span-default]">
-                        <div data-field-wrapper="" class="fi-fo-field-wrp">
-                            <div class="grid gap-y-2">
-                                <div class="flex items-center gap-x-3 justify-between ">
-                                    <label class="fi-fo-field-wrp-label inline-flex items-center gap-x-3"
-                                        for="email">
-                                        <span class="text-sm font-medium leading-6 text-gray-950 dark:text-white">
-                                            E-mail<sup class="text-red-600 dark:text-red-400 font-medium">*</sup>
-                                        </span>
-                                    </label>
-                                </div>
-                                <div class="grid auto-cols-fr gap-y-2">
-                                    <div
-                                        class="fi-input-wrp flex rounded-lg shadow-sm ring-1 transition duration-75 bg-white dark:bg-white/5 [&amp;:not(:has(.fi-ac-action:focus))]:focus-within:ring-2 ring-gray-950/10 dark:ring-white/20 [&amp;:not(:has(.fi-ac-action:focus))]:focus-within:ring-primary-600 dark:[&amp;:not(:has(.fi-ac-action:focus))]:focus-within:ring-primary-500 fi-fo-text-input overflow-hidden">
-                                        <div class="fi-input-wrp-input min-w-0 flex-1">
-                                            <input id="email" type="email" name="email" required autofocus
-                                                class="fi-input block w-full border-none py-1.5 text-base text-gray-950 transition duration-75 placeholder:text-gray-400 focus:ring-0 disabled:text-gray-500 disabled:[-webkit-text-fill-color:theme(colors.gray.500)] disabled:placeholder:[-webkit-text-fill-color:theme(colors.gray.400)] dark:text-white dark:placeholder:text-gray-500 dark:disabled:text-gray-400 dark:disabled:[-webkit-text-fill-color:theme(colors.gray.400)] dark:disabled:placeholder:[-webkit-text-fill-color:theme(colors.gray.500)] sm:text-sm sm:leading-6 bg-white/0 ps-3 pe-3">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="--col-span-default: span 1 / span 1;" class="col-[--col-span-default]">
-                        <div data-field-wrapper="" class="fi-fo-field-wrp">
-                            <div class="grid gap-y-2">
-                                <div class="flex items-center gap-x-3 justify-between ">
-                                    <label class="fi-fo-field-wrp-label inline-flex items-center gap-x-3"
-                                        for="password">
-                                        <span class="text-sm font-medium leading-6 text-gray-950 dark:text-white">
-                                            Senha<sup class="text-red-600 dark:text-red-400 font-medium">*</sup>
-                                        </span>
-                                    </label>
-                                </div>
-                                <div class="grid auto-cols-fr gap-y-2">
-                                    <div
-                                        class="fi-input-wrp flex rounded-lg shadow-sm ring-1 transition duration-75 bg-white dark:bg-white/5 [&amp;:not(:has(.fi-ac-action:focus))]:focus-within:ring-2 ring-gray-950/10 dark:ring-white/20 [&amp;:not(:has(.fi-ac-action:focus))]:focus-within:ring-primary-600 dark:[&amp;:not(:has(.fi-ac-action:focus))]:focus-within:ring-primary-500 fi-fo-text-input overflow-hidden">
-                                        <div class="fi-input-wrp-input min-w-0 flex-1">
-                                            <input id="password" type="password" name="password" required
-                                                class="fi-input block w-full border-none py-1.5 text-base text-gray-950 transition duration-75 placeholder:text-gray-400 focus:ring-0 disabled:text-gray-500 disabled:[-webkit-text-fill-color:theme(colors.gray.500)] disabled:placeholder:[-webkit-text-fill-color:theme(colors.gray.400)] dark:text-white dark:placeholder:text-gray-500 dark:disabled:text-gray-400 dark:disabled:[-webkit-text-fill-color:theme(colors.gray.400)] dark:disabled:placeholder:[-webkit-text-fill-color:theme(colors.gray.500)] sm:text-sm sm:leading-6 bg-white/0 ps-3 pe-3 [&amp;::-ms-reveal]:hidden">
-                                        </div>
-                                        <button type="button" id="togglePassword"
-                                            class="px-3 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between">
-                    <label class="flex items-center">
-                        <input type="checkbox" name="remember"
-                            class="h-4 w-4 text-primary-600 border-zinc-300 rounded dark:bg-zinc-700 dark:border-zinc-600">
-                        <span class="ml-2 text-sm text-zinc-600 dark:text-zinc-300">Lembrar-me</span>
+                
+                <!-- Campo Email -->
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        E-mail <span class="text-red-600 dark:text-red-400">*</span>
                     </label>
-                    <a href="{{ route('password.request') }}"
-                        class="text-sm text-primary-600 dark:text-primary-400 hover:underline">Esqueceu sua senha?</a>
+                    <input id="email" name="email" type="email" required autofocus
+                        class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-primary-500 dark:focus:ring-primary-400 dark:bg-gray-800/50 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-all duration-200"
+                        placeholder="seu@email.com">
                 </div>
-                <div class="fi-form-actions">
-                    <div class="fi-ac gap-3 grid grid-cols-[repeat(auto-fit,minmax(0,1fr))]">
-                        <button type="submit"
-                            class="fi-btn relative grid-flow-col items-center justify-center font-semibold outline-none transition duration-75 focus-visible:ring-2 rounded-lg fi-color-custom bg-zinc-500 fi-color-primary fi-size-md fi-btn-size-md gap-1.5 px-3 py-2 text-sm inline-grid shadow-sm bg-custom-600 text-white hover:bg-custom-500 focus-visible:ring-custom-500/50 dark:bg-custom-500 dark:hover:bg-custom-400 dark:focus-visible:ring-custom-400/50 fi-ac-action fi-ac-btn-action">
-                            <span class="fi-btn-label">
-                                Sign in
-                            </span>
+                
+                <!-- Campo Senha -->
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Senha <span class="text-red-600 dark:text-red-400">*</span>
+                    </label>
+                    <div class="relative">
+                        <input id="password" name="password" type="password" required
+                            class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-primary-500 dark:focus:ring-primary-400 dark:bg-gray-800/50 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 pr-12 transition-all duration-200"
+                            placeholder="••••••••">
+                        <button type="button" id="togglePassword"
+                            class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400">
+                            <i class="fas fa-eye text-lg"></i>
                         </button>
                     </div>
                 </div>
+
+                <div class="flex items-center justify-between pt-1">
+                    <div class="flex items-center">
+                        <input id="remember" name="remember" type="checkbox"
+                            class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 dark:border-gray-600 rounded dark:bg-gray-700 transition-all duration-200">
+                        <label for="remember" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                            Lembrar-me
+                        </label>
+                    </div>
+                    <a href="{{ route('password.request') }}" class="text-sm text-primary-600 dark:text-primary-400 hover:underline font-medium">
+                        Esqueceu a senha?
+                    </a>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit" 
+                        class="w-full flex justify-center py-3 px-4 rounded-lg shadow-sm text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-primary-500 transition-all duration-200 hover:brightness-110  bg-[color:var(--primary-color)]" style="background-color: var(--primary-color)">
+                        Entrar
+                    </button>
+                </div>
             </form>
-        </section>
+        </div>
     </div>
 </x-guest-layout>

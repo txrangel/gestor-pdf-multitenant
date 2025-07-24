@@ -16,14 +16,52 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+
+<body class="fi-body fi-panel-app min-h-screen font-normal antialiased">
+    <div class="fi-simple-layout flex min-h-screen flex-col items-center">
+        <!-- Botões de tema flutuantes -->
+        <div id="theme-toggle"
+            class="fixed top-4 right-4 p-2 bg-white/80 dark:bg-zinc-800/80 rounded-full shadow-md flex space-x-2 z-50 backdrop-blur-sm border border-white/20 dark:border-zinc-700/50">
+            <button id="theme-dark" title="Modo escuro"
+                class="flex items-center justify-center w-8 h-8 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors duration-200">
+                <i class="fas fa-moon text-zinc-600 dark:text-zinc-300"></i>
+            </button>
+            <button id="theme-light" title="Modo claro"
+                class="flex items-center justify-center w-8 h-8 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors duration-200">
+                <i class="fas fa-sun text-zinc-600 dark:text-zinc-300"></i>
+            </button>
+            <button id="theme-system" title="Seguir sistema"
+                class="flex items-center justify-center w-8 h-8 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors duration-200">
+                <i class="fas fa-desktop text-zinc-600 dark:text-zinc-300"></i>
+            </button>
+        </div>
+
+        <!-- Conteúdo principal -->
+        <div class="w-full flex flex-grow items-center justify-center bg-[color:var(--primary-color-75)]" style="background-color: var(--primary-color-75)">
+            <main class="w-full max-w-md rounded-2xl shadow-xl overflow-hidden backdrop-blur-md transition-all duration-300 hover:shadow-2xl">
+                {{ $slot }}
+            </main>
+        </div>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const htmlElement = document.documentElement;
-            const themeDropdown = document.getElementById('theme-dropdown');
-
-            // Função para atualizar o tema com base na escolha do usuário
-            function setTheme(theme) {
+            
+            // Aplica cores do tenant dinamicamente
+            function updateTenantColors() {
+                const primary = "{{ tenant()->primary_color ?? '#4f46e5' }}";
+                const primary75 = "{{ tenant()->primary_color ? Illuminate\Support\Str::finish(tenant()->primary_color, 'bf') : '#4f46e5bf' }}";
+                const secondary = "{{ tenant()->secundary_color ?? '#ec4899' }}";
+                
+                document.documentElement.style.setProperty('--primary-color', primary);
+                document.documentElement.style.setProperty('--primary-color-75', primary75);
+                document.documentElement.style.setProperty('--secondary-color', secondary);
+            }
+            
+            // Função para aplicar o tema
+            function applyTheme(theme) {
                 if (theme === 'dark') {
                     htmlElement.classList.add('dark');
                     localStorage.setItem('theme', 'dark');
@@ -31,86 +69,44 @@
                     htmlElement.classList.remove('dark');
                     localStorage.setItem('theme', 'light');
                 } else {
-                    localStorage.removeItem('theme'); // Remove preferência para seguir o sistema
+                    localStorage.removeItem('theme');
                     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
                         htmlElement.classList.add('dark');
                     } else {
                         htmlElement.classList.remove('dark');
                     }
                 }
+                updateTenantColors();
             }
 
-            // Aplica o tema salvo ou segue o sistema
-            if (localStorage.getItem('theme')) {
-                setTheme(localStorage.getItem('theme'));
+            // Configuração inicial
+            updateTenantColors();
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                applyTheme(savedTheme);
             } else {
-                setTheme('system');
+                applyTheme('system');
             }
 
-            // Evento para cada botão do menu suspenso
-            document.getElementById('theme-dark').addEventListener('click', () => setTheme('dark'));
-            document.getElementById('theme-light').addEventListener('click', () => setTheme('light'));
-            document.getElementById('theme-system').addEventListener('click', () => setTheme('system'));
+            // Event listeners para os botões
+            document.getElementById('theme-dark').addEventListener('click', () => applyTheme('dark'));
+            document.getElementById('theme-light').addEventListener('click', () => applyTheme('light'));
+            document.getElementById('theme-system').addEventListener('click', () => applyTheme('system'));
 
-            // Mostrar/Ocultar o menu suspenso ao passar o mouse
-            document.getElementById('theme-toggle').addEventListener('mouseenter', () => {
-                themeDropdown.classList.remove('hidden');
-            });
-
-            document.getElementById('theme-toggle').addEventListener('mouseleave', () => {
-                themeDropdown.classList.add('hidden');
-            });
-        });
-    </script>
-</head>
-
-<body
-    class="fi-body fi-panel-app min-h-screen bg-white font-normal text-zinc-950 antialiased dark:bg-zinc-950 dark:text-white">
-    <div class="fi-simple-layout flex min-h-screen flex-col items-center">
-        <div id="theme-toggle"
-            class="absolute top-2 right-2 p-2 bg-zinc-200 dark:bg-zinc-800 rounded-full shadow-md flex space-x-2">
-            <button id="theme-dark"
-                class="flex items-center justify-center w-8 h-8 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-700">
-                <i class="fas fa-moon text-l"></i>
-            </button>
-            <button id="theme-light"
-                class="flex items-center justify-center w-8 h-8 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-700">
-                <i class="fas fa-sun text-l"></i>
-            </button>
-            <button id="theme-system"
-                class="flex items-center justify-center w-8 h-8 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-700">
-                <i class="fas fa-desktop text-l"></i>
-            </button>
-        </div>
-        <div class="fi-simple-main-ctn flex w-full flex-grow items-center justify-center">
-            <main
-                class="fi-simple-main my-16 w-full bg-white px-6 py-12 shadow-sm ring-1 ring-zinc-950/5 dark:bg-zinc-900 dark:ring-white/10 sm:rounded-xl sm:px-12 max-w-lg">
-                {{ $slot }}
-            </main>
-        </div>
-    </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
+            // Alternar visibilidade da senha
             const togglePassword = document.querySelector('#togglePassword');
-            const password = document.querySelector('#password');
-
-            togglePassword.addEventListener('click', function() {
-                // Alterna entre os tipos de input
-                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-                password.setAttribute('type', type);
-
-                // Alterna o ícone do botão
-                const icon = this.querySelector('i');
-                if (type === 'password') {
-                    icon.classList.remove('fa-eye-slash');
-                    icon.classList.add('fa-eye');
-                } else {
-                    icon.classList.remove('fa-eye');
-                    icon.classList.add('fa-eye-slash');
-                }
-            });
+            if (togglePassword) {
+                togglePassword.addEventListener('click', function() {
+                    const password = document.querySelector('#password');
+                    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                    password.setAttribute('type', type);
+                    
+                    const icon = this.querySelector('i');
+                    icon.classList.toggle('fa-eye');
+                    icon.classList.toggle('fa-eye-slash');
+                });
+            }
         });
     </script>
 </body>
-
 </html>
