@@ -4,7 +4,7 @@
         <div class="flex justify-center">
             <div class="h-24 w-full flex items-center justify-center">
                 <img src="{{ Storage::url(tenant()->photo_path) }}" alt="{{ tenant()->name }} Logo" 
-                     class="h-full object-contain max-w-full">
+                     class="rounded-2xl h-full object-contain max-w-full ">
             </div>
         </div>
 
