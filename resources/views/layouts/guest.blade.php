@@ -49,12 +49,12 @@
                 <div class="relative z-10 text-center space-y-6">
                     <div class="flex justify-center">
                         <img src="{{ Storage::url(tenant()->photo_path) }}" alt="{{ tenant()->name }} Logo" 
-                                 class="h-30 w-30 backdrop-blur-sm object-contain rounded-3xl">
+                                 class="h-64 w-64 rounded-lg object-cover shadow-md border border-white/20 backdrop-blur-sm object-contain">
                     </div>
                     <h1 class="text-3xl font-bold tracking-tight">
                         Bem-vindo(a) ao GPED da {{ tenant()->name }}
                     </h1>
-                    <p class="text-white/80 max-w-sm">
+                    <p class="text-white/80 max-w-md">
                         Acesse a plataforma com suas credenciais para gerenciar seus negócios.
                     </p>
                 </div>
