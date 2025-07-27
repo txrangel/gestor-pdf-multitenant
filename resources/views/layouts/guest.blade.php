@@ -9,18 +9,22 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <script src="https://kit.fontawesome.com/83b4e7d16f.js" crossorigin="anonymous"></script>
 
-    <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <style>
+        :root {
+            --primary-color: {{ tenant()->primary_color ?? '#4f46e5' }};
+            --secondary-color: {{ tenant()->secundary_color ?? '#ec4899' }};
+        }
+    </style>
 </head>
 
-<body class="fi-body fi-panel-app min-h-screen font-normal antialiased">
-    <div class="fi-simple-layout flex min-h-screen flex-col items-center">
-        <!-- Botões de tema flutuantes -->
+<body class="font-normal antialiased">
+    <div class="relative min-h-screen">
         <div id="theme-toggle"
             class="fixed top-4 right-4 p-2 bg-white/80 dark:bg-zinc-800/80 rounded-full shadow-md flex space-x-2 z-50 backdrop-blur-sm border border-white/20 dark:border-zinc-700/50">
             <button id="theme-dark" title="Modo escuro"
@@ -37,15 +41,34 @@
             </button>
         </div>
 
-        <!-- Conteúdo principal -->
-        <div class="w-full flex flex-grow items-center justify-center bg-[color:var(--primary-color-75)]" style="background-color: var(--primary-color-75)">
-            <main class="w-full max-w-md rounded-2xl shadow-xl overflow-hidden backdrop-blur-md transition-all duration-300 hover:shadow-2xl">
-                {{ $slot }}
-            </main>
+        <div class="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
+            <div class="hidden lg:flex flex-col items-center justify-center p-12 text-white relative overflow-hidden" style="background-color: var(--primary-color);">
+                <div class="absolute w-72 h-72 rounded-full opacity-20 blur-3xl -top-10 -left-16" style="background-color: var(--secondary-color);"></div>
+                <div class="absolute w-72 h-72 rounded-full opacity-20 blur-3xl -bottom-10 -right-16" style="background-color: var(--secondary-color);"></div>
+                
+                <div class="relative z-10 text-center space-y-6">
+                    <div class="flex justify-center">
+                        <img src="{{ Storage::url(tenant()->photo_path) }}" alt="{{ tenant()->name }} Logo" 
+                                 class="h-30 w-30 backdrop-blur-sm object-contain rounded-3xl">
+                    </div>
+                    <h1 class="text-3xl font-bold tracking-tight">
+                        Bem-vindo(a) ao GPED da {{ tenant()->name }}
+                    </h1>
+                    <p class="text-white/80 max-w-sm">
+                        Acesse a plataforma com suas credenciais para gerenciar seus negócios.
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex flex-col items-center justify-center bg-white dark:bg-zinc-950 p-6">
+                <main class="w-full max-w-md">
+                    {{ $slot }}
+                </main>
+            </div>
         </div>
     </div>
 
-    <script>
+        <script>
         document.addEventListener('DOMContentLoaded', () => {
             const htmlElement = document.documentElement;
             

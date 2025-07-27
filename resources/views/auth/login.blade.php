@@ -1,21 +1,11 @@
 <x-guest-layout>
     <div class="space-y-8 bg-white dark:bg-zinc-950 dark:text-white p-4">
-        <!-- Logo do cliente -->
-        <div class="flex justify-center">
-            <div class="h-24 w-full flex items-center justify-center">
-                <img src="{{ Storage::url(tenant()->photo_path) }}" alt="{{ tenant()->name }} Logo" 
-                     class="rounded-2xl h-full object-contain max-w-full ">
-            </div>
-        </div>
-
         <div class="space-y-6">
             <h1 class="text-2xl font-bold text-center text-gray-900 dark:text-white">
                 Acesse sua conta
             </h1>
-
             <form class="space-y-5" method="POST" action="{{ route('login') }}">
                 @csrf
-                
                 <!-- Campo Email -->
                 <div>
                     <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -25,7 +15,6 @@
                         class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-primary-500 dark:focus:ring-primary-400 dark:bg-gray-800/50 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-all duration-200"
                         placeholder="seu@email.com">
                 </div>
-                
                 <!-- Campo Senha -->
                 <div>
                     <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -41,7 +30,6 @@
                         </button>
                     </div>
                 </div>
-
                 <div class="flex items-center justify-between pt-1">
                     <div class="flex items-center">
                         <input id="remember" name="remember" type="checkbox"
@@ -54,7 +42,6 @@
                         Esqueceu a senha?
                     </a>
                 </div>
-
                 <div class="pt-2">
                     <button type="submit" 
                         class="w-full flex justify-center py-3 px-4 rounded-lg shadow-sm text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-primary-500 transition-all duration-200 hover:brightness-110  bg-[color:var(--primary-color)]" style="background-color: var(--primary-color)">
