@@ -14,14 +14,13 @@ class OrderService
         private OrderItemService $orderItemService
     ) {}
 
-    public function createOrdersFromArray(array $ordersData,int $txt_id): void
+    public function createOrdersFromArray(array $ordersData,int $pdf_id): void
     {
-        DB::transaction(function () use ($ordersData, $txt_id) {
+        DB::transaction(function () use ($ordersData, $pdf_id) {
             foreach ($ordersData as $orderData) {
                 $customer = app(CustomerController::class)->findByCNPJOrCreate($orderData['CNPJ']);
                 $order = $this->orderRepository->create([
-                    'txt_id' => $txt_id,
-                    // 'cnpj' => $orderData['CNPJ'],
+                    'pdf_id' => $pdf_id,
                     'customer_id' => $customer->id,
                     'client_order' => $orderData['ClientOrder'],
                     'date' => \Carbon\Carbon::createFromFormat('d/m/Y', $orderData['Date']),

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Txt;
+use App\Models\Pdf;
 use App\Services\OrderService;
 use App\Services\PdfService;
 use Filament\Notifications\Notification;
@@ -16,16 +16,15 @@ class OrderController extends Controller
         private OrderService $orderService
     ) {}
 
-    public function create(Txt $txt): JsonResponse
+    public function create(Pdf $pdf): JsonResponse
     {
-        $pdf = app(PdfController::class)->findById($txt->pdf->id);
         $pdfFilePath = Storage::disk('public')->path($pdf->file_path);
         if (!file_exists($pdfFilePath))
             throw new \Exception("Arquivo PDF não encontrado: $pdfFilePath");
         $json = $this->pdfService->ConvertPDFAPI($pdfFilePath, '3');
         $orders = json_decode($json, true);
         if (is_array($orders)) {
-            $this->orderService->createOrdersFromArray($orders, $txt->id);
+            $this->orderService->createOrdersFromArray($orders, $pdf->id);
                 Notification::make()
                 ->success()
                 ->title('Pedido criado.')

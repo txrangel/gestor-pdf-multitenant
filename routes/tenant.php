@@ -15,6 +15,7 @@ Route::middleware([
     ShareErrorsFromSession::class,
 ])->group(function () {
     Route::redirect('/','/app')->name('app');
+    // Route::redirect('/admin','/app')->name('admin');
     Route::post('/upload', [PdfController::class,'store'])->name('upload');
     
     // Rotas de autenticação do Breeze

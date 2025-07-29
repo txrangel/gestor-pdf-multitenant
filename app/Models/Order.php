@@ -9,17 +9,21 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Order extends Model
 {
     protected $fillable = [
-        'txt_id',
+        'pdf_id',
         'customer_id',
         'client_order',
         'date',
         'message_for_note',
         'operation',
         'shipping_type',
+        'order_erp',
+        'export',
+        'error_erp'
     ];
 
     protected $casts = [
         'date' => 'date',
+        'export' => 'boolean'
     ];
 
     public function items(): HasMany

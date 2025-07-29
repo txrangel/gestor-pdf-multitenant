@@ -13,13 +13,16 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('txt_id')->constrained()->onDelete('cascade')->unique();
+            $table->foreignId('pdf_id')->constrained()->onDelete('cascade')->unique();
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');
             $table->string('client_order');
             $table->date('date');
             $table->text('message_for_note')->nullable();
             $table->string('operation');
             $table->string('shipping_type');
+            $table->string('order_erp')->nullable();
+            $table->boolean('export')->default(false);
+            $table->longText('error_erp')->nullable();
             $table->timestamps();
         });
     }

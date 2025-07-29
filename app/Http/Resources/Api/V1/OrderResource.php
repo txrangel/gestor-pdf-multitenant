@@ -16,7 +16,7 @@ class OrderResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'txt_id' => $this->txt_id,
+            'pdf_id' => $this->pdf_id,
             'client_order' => $this->client_order,
             'date' => $this->date->format('Y-m-d'),
             'message_for_note' => $this->message_for_note,

@@ -22,7 +22,7 @@ class ManageTxts extends ManageRecords
                 })
                 ->successNotificationTitle('TXT criado.')
                 ->after(function ($record) {
-                    $json = app(OrderController::class)->create($record);
+                    app(OrderController::class)->create($record->pdf);
                 }),
         ];
     }
