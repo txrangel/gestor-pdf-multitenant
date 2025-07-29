@@ -23,13 +23,15 @@ class OrderRepository
     {
         return $this->model->findOrFail(id: $id);
     }
-    public function getByDates($start_date,$end_date): Collection
+    public function getByDatesForAPI($start_date,$end_date): Collection
     {
         return $this->model::with(['customer', 'items'])
                 ->whereBetween('date', [
                     $start_date,
                     $end_date
                 ])
+                ->where('export',false)
+                ->orderBy('id')
                 ->orderBy('date', 'desc')
                 ->get();
     }
@@ -39,13 +41,13 @@ class OrderRepository
     }
     public function update(int $id, array $data): Order
     {
-        $account = $this->findById(id: $id);
-        $account->update(attributes: $data);
-        return $account;
+        $order = $this->findById(id: $id);
+        $order->update(attributes: $data);
+        return $order;
     }
     public function delete(int $id): bool
     {
-        $account = $this->findById(id: $id);
-        return $account->delete();
+        $order = $this->findById(id: $id);
+        return $order->delete();
     }
 }
