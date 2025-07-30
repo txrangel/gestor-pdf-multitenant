@@ -112,6 +112,7 @@ class OrderController extends Controller
     {
         try {
             $order = $this->orderService->findById($request->order_id);
+            $error_erp = $order->error_erp ? $order->error_erp  : '';
             if($order->export){
                 return response()->json([
                         'error' => 'Falha ao atualizar pedido',
@@ -126,7 +127,7 @@ class OrderController extends Controller
                 } else {
                     $order = $this->orderService->markAsFailed(
                         orderId: $order->id,
-                        errorMessage: $request->error_message
+                        errorMessage: "User: ". auth()->user()->email . " | Date: " . now() . " | Error: ". $request->error_message . " \r\n " . $error_erp
                     );
                 }
                 return response()->json([
